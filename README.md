@@ -2,7 +2,9 @@
 
 [![build](https://github.com/haydenmeade/neotest-jest/actions/workflows/workflow.yaml/badge.svg)](https://github.com/haydenmeade/neotest-jest/actions/workflows/workflow.yaml)
 
-This plugin provides a jest adapter for the [Neotest](https://github.com/rcarriga/neotest) framework.
+This plugin provides a [jest](https://github.com/jestjs/jest) adapter for the [Neotest](https://github.com/rcarriga/neotest) framework.
+Requires at least Neotest version 4.0.0 which in turn requires at least neovim version 0.9.0.
+
 **It is currently a work in progress**.
 
 ## Installation
@@ -105,8 +107,7 @@ If you have a monorepo setup, you might have to do a little more configuration, 
 you have different jest configurations per package.
 
 ```lua
-jestConfigFile = function()
-  local file = vim.fn.expand('%:p')
+jestConfigFile = function(file)
   if string.find(file, "/packages/") then
     return string.match(file, "(.-/[^/]+/)src") .. "jest.config.ts"
   end
@@ -120,8 +121,7 @@ directory (like when you have a lerna setup for example), you might also have to
 bit:
 
 ```lua
-cwd = function()
-  local file = vim.fn.expand('%:p')
+cwd = function(file)
   if string.find(file, "/packages/") then
     return string.match(file, "(.-/[^/]+/)src")
   end

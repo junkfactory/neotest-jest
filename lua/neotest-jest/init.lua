@@ -87,6 +87,14 @@ local function hasJestDependency(path)
     end
   end
 
+  if parsedPackageJson["scripts"] then
+    for _, value in pairs(parsedPackageJson["scripts"]) do
+      if value == "jest" then
+        return true
+      end
+    end
+  end
+
   return rootProjectHasJestDependency()
 end
 
@@ -417,7 +425,7 @@ function adapter.build_spec(args)
     "--outputFile=" .. results_path,
     "--testNamePattern=" .. testNamePattern,
     "--forceExit",
-    vim.fs.normalize(pos.path),
+    escapeTestPattern(vim.fs.normalize(pos.path)),
   })
 
   local cwd = getCwd(pos.path)
